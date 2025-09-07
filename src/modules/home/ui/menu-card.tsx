@@ -101,20 +101,22 @@ export default function MenuCard({ updateCart }: Props) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-8">
+    <div className="w-full max-w-3xl mx-auto py-8 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 rounded-xl shadow-xl border border-blue-200">
       {categories.length === 0 ? (
-        <div className="text-center text-sm text-muted-foreground">
+        <div className="text-center text-sm text-blue-700">
           No categories found
         </div>
       ) : (
         categories.map((cat) => (
           <div key={cat.id} className="mb-6">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-lg font-semibold">{cat.name}</span>
-              <span className="text-muted-foreground">▼</span>
+              <span className="text-lg font-semibold text-blue-900">
+                {cat.name}
+              </span>
+              <span className="text-blue-400">▼</span>
             </div>
             {cat.items.length === 0 ? (
-              <div className="text-sm text-muted-foreground ml-4">
+              <div className="text-sm text-blue-500 ml-4">
                 No items in this category
               </div>
             ) : (
@@ -122,11 +124,13 @@ export default function MenuCard({ updateCart }: Props) {
                 {cat.items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between items-center border rounded-md p-3"
+                    className="flex justify-between items-center border border-blue-300 rounded-xl p-4 bg-blue-50 shadow-md"
                   >
                     <div className="flex flex-col">
-                      <span className="font-medium">{item.name}</span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="font-medium text-blue-900">
+                        {item.name}
+                      </span>
+                      <span className="text-xs text-blue-700">
                         {item.price} • discount: {item.discount ?? 0}
                       </span>
                     </div>
@@ -136,16 +140,18 @@ export default function MenuCard({ updateCart }: Props) {
                           <Button
                             size="icon"
                             variant="outline"
+                            className="border-blue-400 text-blue-700 hover:bg-blue-700 hover:text-white"
                             onClick={() => handleDec(item.id)}
                           >
                             -
                           </Button>
-                          <span className="px-2 font-semibold">
+                          <span className="px-2 font-semibold text-blue-800">
                             {quantities[item.id]}
                           </span>
                           <Button
                             size="icon"
                             variant="outline"
+                            className="border-blue-400 text-blue-700 hover:bg-blue-700 hover:text-white"
                             onClick={() => handleInc(item.id)}
                           >
                             +
@@ -154,6 +160,7 @@ export default function MenuCard({ updateCart }: Props) {
                       ) : (
                         <Button
                           variant="default"
+                          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-lg hover:bg-blue-700"
                           onClick={() => handleAdd(item.id)}
                         >
                           Add

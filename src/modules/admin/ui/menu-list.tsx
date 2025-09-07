@@ -243,10 +243,15 @@ export default function MenuManager() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-8">
+    <div className="w-full max-w-3xl mx-auto py-8 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 rounded-xl border border-blue-200">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Menu Manager</h1>
-        <Button onClick={openCreate} variant="outline" size="sm">
+        <h1 className="text-2xl font-bold text-blue-900">Menu Manager</h1>
+        <Button
+          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow-lg hover:bg-blue-700"
+          onClick={openCreate}
+          variant="outline"
+          size="sm"
+        >
           <Plus className="mr-2 h-4 w-4" /> New Item
         </Button>
       </div>
@@ -254,7 +259,7 @@ export default function MenuManager() {
       <Card className="mb-6">
         <CardContent>
           {categoriesData.length === 0 ? (
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-blue-700">
               No categories found
             </div>
           ) : (
@@ -272,13 +277,13 @@ export default function MenuManager() {
               return (
                 <div key={cat.id} className="mb-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg font-semibold">
+                    <span className="text-lg font-semibold text-blue-900">
                       {cat.category}
                     </span>
-                    <span className="text-muted-foreground">▼</span>
+                    <span className="text-blue-400">▼</span>
                   </div>
                   {items.length === 0 ? (
-                    <div className="text-sm text-muted-foreground ml-4">
+                    <div className="text-sm text-blue-500 ml-4">
                       No items in this category
                     </div>
                   ) : (
@@ -294,11 +299,13 @@ export default function MenuManager() {
                         }) => (
                           <div
                             key={item.id}
-                            className="flex justify-between items-center border rounded-md p-3"
+                            className="flex justify-between items-center border border-blue-300 rounded-xl p-4 bg-blue-50"
                           >
                             <div className="flex flex-col">
-                              <span className="font-medium">{item.name}</span>
-                              <span className="text-xs text-muted-foreground">
+                              <span className="font-medium text-blue-900">
+                                {item.name}
+                              </span>
+                              <span className="text-xs text-blue-700">
                                 {item.price} • discount: {item.discount ?? 0}
                               </span>
                             </div>
@@ -306,6 +313,7 @@ export default function MenuManager() {
                               <Button
                                 size="icon"
                                 variant="outline"
+                                className="border-blue-400 text-blue-700 hover:bg-blue-700 hover:text-white"
                                 onClick={() => openEdit(item)}
                               >
                                 <Pencil className="h-4 w-4" />
@@ -313,6 +321,7 @@ export default function MenuManager() {
                               <Button
                                 size="icon"
                                 variant="destructive"
+                                className="bg-blue-600 hover:bg-blue-700 text-white"
                                 onClick={() => onDelete(item.id)}
                               >
                                 <Trash2 className="h-4 w-4" />

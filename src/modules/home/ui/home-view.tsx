@@ -58,19 +58,21 @@ export default function HomeView() {
   };
 
   return (
-    <>
-      <Search />
-      <Popular />
-      <MenuCard updateCart={updateCart} />
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 flex flex-col items-center py-10 px-2">
+      <div className="w-full max-w-3xl">
+        <Search />
+        <Popular />
+        <MenuCard updateCart={updateCart} />
+      </div>
       {cartLength > 0 && (
         <Button
-          className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-8 py-3 text-lg font-semibold shadow-lg"
+          className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-8 py-3 text-lg font-semibold shadow-lg bg-gradient-to-r from-blue-500 to-blue-700 border border-blue-400 text-white hover:bg-blue-700"
           variant="default"
           onClick={() => router.push("/cart")}
         >
-          View Cart ({cartLength})
+          View Cart <span className="ml-2 text-blue-100">({cartLength})</span>
         </Button>
       )}
-    </>
+    </div>
   );
 }

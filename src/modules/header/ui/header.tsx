@@ -29,7 +29,7 @@ export default function Header() {
   ];
 
   return (
-    <div className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-b border-yellow-100 bg-gradient-to-r from-[#fff8e1] via-white to-[#fff8e1] px-4 md:px-8 shadow-lg backdrop-blur-md">
+    <div className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-b border-blue-200 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 px-4 md:px-8 shadow-lg backdrop-blur-md">
       {/* Nav Links */}
       <div className="flex gap-2 md:gap-3">
         {navLinks.map((link) => {
@@ -40,8 +40,10 @@ export default function Header() {
               href={link.href}
               className={cn(
                 "group relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300",
-                "hover:bg-yellow-100 hover:text-yellow-700 hover:shadow-md",
-                active ? "bg-yellow-400 text-white shadow-md" : "text-gray-700"
+                "hover:bg-blue-700 hover:text-white hover:shadow-md",
+                active
+                  ? "bg-blue-600 text-white shadow-md border border-blue-400"
+                  : "text-blue-700 border border-blue-200"
               )}
             >
               {link.icon}
@@ -50,8 +52,8 @@ export default function Header() {
                 className={cn(
                   "pointer-events-none absolute inset-x-2 -bottom-[6px] h-[2px] rounded-full transition-all duration-300",
                   active
-                    ? "bg-yellow-400 opacity-100"
-                    : "bg-yellow-300 opacity-0 group-hover:opacity-100"
+                    ? "bg-blue-600 opacity-100"
+                    : "bg-blue-400 opacity-0 group-hover:opacity-100"
                 )}
               />
             </Link>
@@ -65,8 +67,8 @@ export default function Header() {
           <button
             type="button"
             className={cn(
-              "flex items-center gap-2 rounded-xl bg-yellow-100 px-4 py-2 text-sm font-bold text-yellow-700 shadow-md transition",
-              "hover:bg-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+              "flex items-center gap-2 rounded-xl bg-blue-100 px-4 py-2 text-sm font-bold text-blue-700 shadow-md transition",
+              "hover:bg-blue-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             )}
           >
             <span className="max-w-[140px] truncate">
@@ -79,13 +81,13 @@ export default function Header() {
           align="end"
           sideOffset={8}
           className={cn(
-            "w-48 rounded-xl border border-yellow-100 bg-white p-2 shadow-xl",
+            "w-48 rounded-xl border border-blue-200 bg-white p-2 shadow-xl",
             "animate-in fade-in-0 zoom-in-95",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
           )}
         >
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-red-600 transition hover:bg-red-50"
+            className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-red-600 transition hover:bg-blue-50"
             onClick={() => {
               authClient.signOut({
                 fetchOptions: {
