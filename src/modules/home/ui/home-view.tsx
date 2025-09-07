@@ -37,7 +37,7 @@ export default function HomeView() {
   const updateCart = (item: string, change: number) => {
     if (typeof window === "undefined") return;
     const cartStr = localStorage.getItem("cart");
-    let cart: { item: string; quantity: number }[] = cartStr
+    const cart: { item: string; quantity: number }[] = cartStr
       ? JSON.parse(cartStr)
       : [];
     const idx = cart.findIndex((cart_item) => cart_item.item === item);

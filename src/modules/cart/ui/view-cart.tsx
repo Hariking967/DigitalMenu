@@ -54,7 +54,7 @@ export default function ViewCart() {
   // updateCart logic from home-view.tsx
   const updateCart = useCallback((item: string, change: number) => {
     const cartStr = localStorage.getItem("cart");
-    let cartArr: { item: string; quantity: number }[] = cartStr
+    const cartArr: { item: string; quantity: number }[] = cartStr
       ? JSON.parse(cartStr)
       : [];
     const idx = cartArr.findIndex((cart_item) => cart_item.item === item);
