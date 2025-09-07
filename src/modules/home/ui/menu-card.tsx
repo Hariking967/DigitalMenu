@@ -38,7 +38,7 @@ export default function MenuCard({ updateCart }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const cartStr = localStorage.getItem("cart");
-    let cart: { item: string; quantity: number }[] = cartStr
+    const cart: { item: string; quantity: number }[] = cartStr
       ? JSON.parse(cartStr)
       : [];
     const newQuantities: Record<string, number> = {};
@@ -50,7 +50,7 @@ export default function MenuCard({ updateCart }: Props) {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "cart") {
         const cartStr = e.newValue;
-        let cart: { item: string; quantity: number }[] = cartStr
+        const cart: { item: string; quantity: number }[] = cartStr
           ? JSON.parse(cartStr)
           : [];
         const newQuantities: Record<string, number> = {};
