@@ -27,9 +27,11 @@ export default function RootLayout({
     <TRPCReactProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased p-1`}
         >
           <Header />
+          <br />
+          <br />
           {children}
         </body>
       </html>

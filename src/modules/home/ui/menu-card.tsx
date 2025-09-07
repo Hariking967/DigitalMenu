@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
@@ -17,7 +17,11 @@ interface Category {
   category: string;
 }
 
-export default function MenuCard() {
+interface Props {
+  updateCart: (item: string, change: number) => void;
+}
+
+export default function MenuCard({ updateCart }: Props) {
   const trpc = useTRPC();
   const { data: menuItems } = useSuspenseQuery(trpc.menu.getAll.queryOptions());
   const { data: categoriesDataRaw } = useSuspenseQuery(
@@ -27,8 +31,38 @@ export default function MenuCard() {
     Array.isArray(categoriesDataRaw) ? categoriesDataRaw : []
   ) as Category[];
 
-  // Track quantity for each menu item
+  // Track quantity for each menu item, sync with localStorage cart
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+
+  // Sync quantities with localStorage cart on mount and when cart changes
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const cartStr = localStorage.getItem("cart");
+    let cart: { item: string; quantity: number }[] = cartStr
+      ? JSON.parse(cartStr)
+      : [];
+    const newQuantities: Record<string, number> = {};
+    cart.forEach(({ item, quantity }) => {
+      newQuantities[item] = quantity;
+    });
+    setQuantities(newQuantities);
+    // Listen for cart changes from other tabs/windows
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "cart") {
+        const cartStr = e.newValue;
+        let cart: { item: string; quantity: number }[] = cartStr
+          ? JSON.parse(cartStr)
+          : [];
+        const newQuantities: Record<string, number> = {};
+        cart.forEach(({ item, quantity }) => {
+          newQuantities[item] = quantity;
+        });
+        setQuantities(newQuantities);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   // Group menu items by category
   const categories = useMemo(() => {
@@ -48,9 +82,11 @@ export default function MenuCard() {
   // Handlers
   const handleAdd = (id: string) => {
     setQuantities((prev) => ({ ...prev, [id]: 1 }));
+    updateCart(id, 1);
   };
   const handleInc = (id: string) => {
     setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    updateCart(id, 1);
   };
   const handleDec = (id: string) => {
     setQuantities((prev) => {
@@ -61,6 +97,7 @@ export default function MenuCard() {
       }
       return { ...prev, [id]: qty };
     });
+    updateCart(id, -1);
   };
 
   return (

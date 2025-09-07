@@ -1,0 +1,42 @@
+colours:
+Backgrounds / Gradients
+
+bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400
+
+blue-100
+
+blue-200
+
+blue-400
+
+bg-blue-50
+
+bg-blue-600
+
+bg-blue-700
+
+bg-gradient-to-r from-blue-500 to-blue-700
+
+Borders
+
+border-blue-200
+
+border-blue-300
+
+border-blue-400
+
+Text
+
+text-blue-900
+
+text-blue-700
+
+text-blue-500
+
+text-blue-800
+
+text-white
+
+Hover
+
+hover:bg-blue-700
