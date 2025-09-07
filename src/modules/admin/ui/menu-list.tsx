@@ -48,6 +48,14 @@ const editSchema = z.object({
 
 type EditForm = z.infer<typeof editSchema>;
 type CategoryType = { id: string; category: string }[];
+type MenuItemType = {
+  id: string;
+  name: string;
+  price: string;
+  discount: number;
+  orderCount: number;
+  category: string;
+};
 
 export default function MenuManager() {
   const trpc = useTRPC();
@@ -93,21 +101,42 @@ export default function MenuManager() {
         );
         form.setValue("category", newCat.id); // auto-select new category
       },
-      onError: (err: any) => alert(err?.message ?? "Failed to create category"),
+      onError: (err) => alert(err ?? "Failed to create category"),
     })
   );
 
   const categories = useMemo(() => {
-    const map: Record<string, any[]> = {};
-    (menuItems ?? []).forEach((item: any) => {
-      const cat = item.category ?? "Uncategorized";
-      if (!map[cat]) map[cat] = [];
-      map[cat].push(item);
-    });
+    const map: Record<
+      string,
+      {
+        id: string;
+        name: string;
+        price: string;
+        discount: number;
+        orderCount: number;
+        category: string;
+      }[]
+    > = {};
+    (menuItems ?? []).forEach(
+      (item: {
+        id: string;
+        name: string;
+        price: string;
+        discount: number;
+        orderCount: number;
+        category: string;
+      }) => {
+        const cat = item.category ?? "Uncategorized";
+        if (!map[cat]) map[cat] = [];
+        map[cat].push(item);
+      }
+    );
     return Object.entries(map).map(([name, items]) => ({ name, items }));
   }, [menuItems]);
 
-  const [editingItem, setEditingItem] = useState<any | null>(null);
+  const [editingItem, setEditingItem] = useState<
+    ({ isNew?: boolean } & Partial<MenuItemType>) | null
+  >(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
@@ -141,7 +170,14 @@ export default function MenuManager() {
     });
   };
 
-  const openEdit = (item: any) => {
+  const openEdit = (item: {
+    id: string;
+    name: string;
+    price: string;
+    discount: number;
+    orderCount: number;
+    category: string;
+  }) => {
     setError(null);
     setEditingItem(item);
     form.reset({
@@ -224,7 +260,14 @@ export default function MenuManager() {
           ) : (
             categoriesData.map((cat) => {
               const items = (menuItems ?? []).filter(
-                (item: any) => item.category === cat.id
+                (item: {
+                  id: string;
+                  name: string;
+                  price: string;
+                  discount: number;
+                  orderCount: number;
+                  category: string;
+                }) => item.category === cat.id
               );
               return (
                 <div key={cat.id} className="mb-6">
@@ -240,35 +283,44 @@ export default function MenuManager() {
                     </div>
                   ) : (
                     <div className="space-y-2 ml-4">
-                      {items.map((item: any) => (
-                        <div
-                          key={item.id}
-                          className="flex justify-between items-center border rounded-md p-3"
-                        >
-                          <div className="flex flex-col">
-                            <span className="font-medium">{item.name}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {item.price} • discount: {item.discount ?? 0}
-                            </span>
+                      {items.map(
+                        (item: {
+                          id: string;
+                          name: string;
+                          price: string;
+                          discount: number;
+                          orderCount: number;
+                          category: string;
+                        }) => (
+                          <div
+                            key={item.id}
+                            className="flex justify-between items-center border rounded-md p-3"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium">{item.name}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {item.price} • discount: {item.discount ?? 0}
+                              </span>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                onClick={() => openEdit(item)}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                size="icon"
+                                variant="destructive"
+                                onClick={() => onDelete(item.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex gap-2">
-                            <Button
-                              size="icon"
-                              variant="outline"
-                              onClick={() => openEdit(item)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="destructive"
-                              onClick={() => onDelete(item.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   )}
                 </div>
