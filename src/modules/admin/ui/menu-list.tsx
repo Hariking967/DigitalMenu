@@ -198,8 +198,8 @@ export default function MenuManager() {
       setLoading(true);
       await updateMutation.mutateAsync(values);
       setEditingItem(null);
-    } catch (err: any) {
-      setError(err?.message ?? "Update failed");
+    } catch {
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -211,8 +211,8 @@ export default function MenuManager() {
       setError(null);
       setLoading(true);
       await deleteMutation.mutateAsync(id);
-    } catch (err: any) {
-      setError(err?.message ?? "Delete failed");
+    } catch {
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -224,8 +224,8 @@ export default function MenuManager() {
       setLoading(true);
       await createMutation.mutateAsync(values);
       setEditingItem(null);
-    } catch (err: any) {
-      setError(err?.message ?? "Create failed");
+    } catch {
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -340,12 +340,12 @@ export default function MenuManager() {
 
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit((vals) => {
+              onSubmit={form.handleSubmit((vals: EditForm) => {
                 if (editingItem?.isNew) {
-                  const { id, ...rest } = vals as any;
+                  const { id, ...rest } = vals;
                   return onCreate(rest);
                 } else {
-                  return onUpdate(vals as EditForm);
+                  return onUpdate(vals);
                 }
               })}
               className="space-y-4 mt-2"
