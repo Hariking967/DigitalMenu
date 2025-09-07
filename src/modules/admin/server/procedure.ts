@@ -1,4 +1,8 @@
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { db } from "@/db";
 import { menu } from "@/db/schema";
 import { category } from "@/db/schema";
@@ -8,13 +12,13 @@ import { nanoid } from "nanoid";
 
 export const menuRouter = createTRPCRouter({
   // Get all menu items
-  getAll: protectedProcedure.query(async () => {
+  getAll: baseProcedure.query(async () => {
     const data = await db.select().from(menu).orderBy(desc(menu.id)); // Could also orderBy createdAt if exists
     return data;
   }),
 
   // Get menu items by name (case-insensitive partial match)
-  getByName: protectedProcedure
+  getByName: baseProcedure
     .input(z.string().min(1, "Name is required"))
     .query(async ({ input }) => {
       const data = await db
@@ -82,12 +86,12 @@ export const menuRouter = createTRPCRouter({
   // ----------------------
   // Category Operations
   // ----------------------
-  getManyCategories: protectedProcedure.query(async () => {
+  getManyCategories: baseProcedure.query(async () => {
     const data = await db.select().from(category).orderBy(desc(category.id));
     return data;
   }),
 
-  getCategoryById: protectedProcedure
+  getCategoryById: baseProcedure
     .input(z.string().min(1, "ID is required"))
     .query(async ({ input }) => {
       const [cat] = await db

@@ -5,7 +5,13 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon, LogOut, List, ShoppingCart } from "lucide-react";
+import {
+  ChevronDownIcon,
+  LogOut,
+  List,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -86,19 +92,32 @@ export default function Header() {
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
           )}
         >
-          <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-red-600 transition hover:bg-blue-50"
-            onClick={() => {
-              authClient.signOut({
-                fetchOptions: {
-                  onSuccess: () => router.push("/auth/sign-in"),
-                },
-              });
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
+          {/* If not logged in, show Sign Up */}
+          {!data?.user && (
+            <DropdownMenuItem
+              className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-blue-700 transition hover:bg-blue-50"
+              onClick={() => router.push("/auth/sign-up")}
+            >
+              <User className="h-4 w-4" />
+              Sign Up
+            </DropdownMenuItem>
+          )}
+          {/* If logged in, show Logout */}
+          {data?.user && (
+            <DropdownMenuItem
+              className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-red-600 transition hover:bg-blue-50"
+              onClick={() => {
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => router.push("/auth/sign-in"),
+                  },
+                });
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

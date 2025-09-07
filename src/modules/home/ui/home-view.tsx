@@ -60,7 +60,7 @@ export default function HomeView() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 flex flex-col items-center py-10 px-2">
       <div className="w-full max-w-3xl">
-        <Search />
+        <Search updateCart={updateCart} />
         <Popular />
         <MenuCard updateCart={updateCart} />
       </div>

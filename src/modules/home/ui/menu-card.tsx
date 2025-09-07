@@ -124,17 +124,22 @@ export default function MenuCard({ updateCart }: Props) {
                 {cat.items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between items-center border border-blue-300 rounded-xl p-4 bg-blue-50 shadow-md"
+                    className="relative flex items-center justify-between border border-blue-300 rounded-xl p-4 bg-blue-50 shadow-md"
                   >
-                    <div className="flex flex-col">
-                      <span className="font-medium text-blue-900">
-                        {item.name}
-                      </span>
-                      <span className="text-xs text-blue-700">
-                        {item.price} • discount: {item.discount ?? 0}
-                      </span>
-                    </div>
-                    <div className="flex gap-2 items-center">
+                    {/* Discount box */}
+                    {item.discount > 0 && (
+                      <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow-lg">
+                        {item.discount}% OFF
+                      </div>
+                    )}
+                    {/* Card layout: left=name, middle=price, right=controls */}
+                    <span className="font-medium text-blue-900 w-1/3 truncate">
+                      {item.name}
+                    </span>
+                    <span className="text-blue-700 w-1/3 text-center">
+                      {item.price}
+                    </span>
+                    <div className="flex gap-2 items-center w-1/3 justify-end">
                       {quantities[item.id] ? (
                         <>
                           <Button
